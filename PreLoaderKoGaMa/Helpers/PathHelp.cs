@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 
-
 namespace PreLoaderKoGaMa.Helpers
 {
     internal class PathHelp
