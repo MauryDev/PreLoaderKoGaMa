@@ -7,24 +7,33 @@ namespace PreLoaderKoGaMa
 {
     internal static class Program
     {
-
         static async Task Main()
         {
-            ConsoleHelper.Log("ServiceManager", "Starting");
-            var Services = new ServiceManager();
-            ConsoleHelper.Log("ServiceManager", "Registering all services");
+            LogServiceStatus("Starting");
+            var services = new ServiceManager();
+            LogServiceStatus("Registering all services");
 
-            Services.Register<ConsoleTools>();
-            Services.Register<BepinexDownload>();
-            Services.Register<KoGaMaToolsDownload>();
-            Services.LoadExternalPlugins();
+            RegisterServices(services);
+            
+            LogServiceStatus("Building all services");
+
+            await services.Build();
+        }
+
+        private static void LogServiceStatus(string status)
+        {
+            ConsoleHelper.Log("ServiceManager", status);
+        }
+
+        private static void RegisterServices(ServiceManager services)
+        {
+            services.Register<ConsoleTools>();
+            services.Register<BepinexDownload>();
+            services.Register<KoGaMaToolsDownload>();
+            services.LoadExternalPlugins();
 #if RELEASE
-            Services.Register<KoGaMaRun>();
+            services.Register<KoGaMaRun>();
 #endif
-            ConsoleHelper.Log("ServiceManager", "Building all services");
-
-            await Services.Build();
-
         }
     }
 }

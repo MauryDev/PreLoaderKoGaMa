@@ -1,7 +1,6 @@
 using PreLoaderKoGaMa.Installer.Helpers;
 using System.Collections;
 using System.IO.Compression;
-using System.Runtime.CompilerServices;
 
 namespace PreLoaderKoGaMa.Installer
 {
@@ -52,41 +51,41 @@ namespace PreLoaderKoGaMa.Installer
             loading.TotalStep = installlen;
 
             using HttpClient httpClient = new();
-            loading.NextState("Downloading PreLoaderKoGaMa zip");
+            loading.NextState("Downloading PreLoaderKoGaMa archive");
             var urlstream = GithubRawHelper.GetUrlCurrent("PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip");
             using var stream = await httpClient.GetStreamAsync(urlstream);
-            loading.NextState("Loading PreLoaderKoGaMa zip");
+            loading.NextState("Loading PreLoaderKoGaMa archive");
 
             using var zip = new ZipArchive(stream);
             if (BrEnable)
             {
-                loading.NextState("Extract PreLoaderKoGaMa to KoGaMa BR");
+                loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa BR");
 
                 var pathlauncher = PathHelper.GetLauncher(PathHelper.BRPath);
                 InstallHelper.Install(pathlauncher, zip);
             }
             if (WwwEnable)
             {
-                loading.NextState("Extract PreLoaderKoGaMa to KoGaMa WWW");
+                loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa WWW");
 
                 var pathlauncher = PathHelper.GetLauncher(PathHelper.WWWPath);
                 InstallHelper.Install(pathlauncher, zip);
             }
             if (FriendsEnable)
             {
-                loading.NextState("Extract PreLoaderKoGaMa to KoGaMa Friends");
+                loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa Friends");
 
                 var pathlauncher = PathHelper.GetLauncher(PathHelper.FriendsPath);
                 InstallHelper.Install(pathlauncher, zip);
             }
             if (CustomEnable)
             {
-                loading.NextState("Extract PreLoaderKoGaMa to KoGaMa Custom Path");
+                loading.NextState("Extracting PreLoaderKoGaMa to custom path");
 
                 var pathlauncher = PathHelper.GetLauncher(customPath);
                 InstallHelper.Install(pathlauncher, zip);
             }
-            loading.NextState("Install PreLoaderKoGaMa Success");
+            loading.NextState("PreLoaderKoGaMa installation successful");
             Thread.Sleep(5000);
             loading.Invoke(() => loading.Close());
             loading = null;
@@ -108,47 +107,47 @@ namespace PreLoaderKoGaMa.Installer
             loading.TotalStep = installlen;
 
             using HttpClient httpClient = new();
-            loading.NextState("Downloading PreLoaderKoGaMa zip");
+            loading.NextState("Downloading PreLoaderKoGaMa archive");
             using var stream = await httpClient.GetStreamAsync("https://raw.githubusercontent.com/MauryDev/PreLoaderKoGaMa/refs/heads/master/PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip");
-            loading.NextState("Loading PreLoaderKoGaMa zip");
+            loading.NextState("Loading PreLoaderKoGaMa archive");
 
             using var zip = new ZipArchive(stream);
             if (BrEnable)
             {
-                loading.NextState("Uninstalling PreLoaderKoGaMa to KoGaMa BR");
+                loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa BR");
 
                 var pathlauncher = PathHelper.GetLauncher(PathHelper.BRPath);
                 UninstallHelper.Uninstall(pathlauncher, zip);
             }
             if (WwwEnable)
             {
-                loading.NextState("Uninstalling PreLoaderKoGaMa to KoGaMa WWW");
+                loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa WWW");
 
                 var pathlauncher = PathHelper.GetLauncher(PathHelper.WWWPath);
                 UninstallHelper.Uninstall(pathlauncher, zip);
             }
             if (FriendsEnable)
             {
-                loading.NextState("Uninstalling PreLoaderKoGaMa to KoGaMa Friends");
+                loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa Friends");
 
                 var pathlauncher = PathHelper.GetLauncher(PathHelper.FriendsPath);
                 UninstallHelper.Uninstall(pathlauncher, zip);
             }
             if (CustomEnable)
             {
-                loading.NextState("Uninstalling PreLoaderKoGaMa to KoGaMa Custom Path");
+                loading.NextState("Uninstalling PreLoaderKoGaMa from custom path");
 
                 var pathlauncher = PathHelper.GetLauncher(customPath);
                 UninstallHelper.Uninstall(pathlauncher, zip);
             }
-            loading.NextState("Uninstall PreLoaderKoGaMa Success");
+            loading.NextState("PreLoaderKoGaMa uninstallation successful");
             Thread.Sleep(5000);
             loading.Invoke(() => loading.Close());
             loading = null;
         }
         private async void backgroundWorker_install_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            
+
             if (e.Argument is int i)
             {
                 if (i == 1)

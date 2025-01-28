@@ -14,23 +14,25 @@ namespace PreLoaderKoGaMa.Services
         {
             classLogger = consoleTools.CreateClassLog<BepinexDownload>();
         }
+
         public async Task RunAsync()
         {
             try
             {
-                classLogger.Log("Checking if is installed");
+                classLogger.Log("Checking if Bepinex is installed");
                 if (!HelperLatestVersion.CanInstallBepinex)
                 {
-                    classLogger.Log("All dependencies is installed");
+                    classLogger.Log("All dependencies are installed");
                     return;
                 }
+
                 var localPath = BepinexInstallPath;
-                classLogger.Log("Dowloading Bepinex");
+                classLogger.Log("Downloading Bepinex");
                 Stream bepinexStream = await HelperLatestVersion.DownloadBepinexAsync();
 
-                classLogger.Log("Load zip Bepinex");
+                classLogger.Log("Loading Bepinex zip");
                 using ZipArchive bepinexZipArchive = new(bepinexStream);
-                classLogger.Log("Extract Bepinex");
+                classLogger.Log("Extracting Bepinex zip");
 
                 foreach (ZipArchiveEntry zipArchiveEntry in bepinexZipArchive.Entries)
                 {
@@ -41,14 +43,13 @@ namespace PreLoaderKoGaMa.Services
                         zipArchiveEntry.ExtractToFile(destinationPath, overwrite: true);
                     }
                 }
-                classLogger.Log("Installed");
-            }
-            catch (Exception)
-            {
 
-                classLogger.Error("Error on install Bepinex");
+                classLogger.Log("Bepinex installed successfully");
             }
-            
+            catch (Exception err)
+            {
+                classLogger.Error("Error installing Bepinex: " + err);
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ namespace PreLoaderKoGaMa.Helpers
 {
     internal class GithubRawHelper
     {
-        public class GithubRepositoryInfo
+        internal class GithubRepositoryInfo
         {
             public string Author { get; set; } = string.Empty;
             public string Repository { get; set; } = string.Empty;
@@ -13,11 +13,11 @@ namespace PreLoaderKoGaMa.Helpers
         public static GithubRepositoryInfo Current { get; set; } = new();
         public static string GetUrl(GithubRepositoryInfo github, string path)
         {
-            return $"https://raw.githubusercontent.com/{github.Author}/${github.Repository}/refs/heads/{github.Branch}/{path}";
+            return GetUrl(github.Author, github.Repository, github.Branch, path);
         }
         public static string GetUrl(string author, string repository, string branch, string path)
         {
-            return $"https://raw.githubusercontent.com/{author}/${repository}/refs/heads/{branch}/{path}";
+            return $"https://raw.githubusercontent.com/{author}/{repository}/refs/heads/{branch}/{path}";
         }
         public static string GetUrlCurrent(string path)
         {

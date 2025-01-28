@@ -16,22 +16,22 @@ namespace PreLoaderKoGaMa.Services
         {
             try
             {
-                classLogger.Log("Checking if is installed");
+                classLogger.Log("Checking if it is installed");
                 if (!HelperLatestVersion.CanInstallKoGaMaTools)
                 {
-                    classLogger.Log("All dependencies is installed");
+                    classLogger.Log("All dependencies are installed");
                     return;
                 }
                 var pluginPath = KoGaMaToolsInstallPath;
 
-                classLogger.Log("Dowloading Last Release from KoGaMa Tools");
+                classLogger.Log("Downloading the latest release of KoGaMa Tools");
                 Stream releaseStream = await HelperLatestVersion.GetLastReleaseStream();
 
-                classLogger.Log("Load zip KoGaMa Tools");
+                classLogger.Log("Loading KoGaMa Tools zip");
 
                 using ZipArchive koGaMaToolsArchive = new(releaseStream);
 
-                classLogger.Log("Extract KoGaMa Tools");
+                classLogger.Log("Extracting KoGaMa Tools");
 
                 foreach (ZipArchiveEntry zipArchiveEntry in koGaMaToolsArchive.Entries)
                 {
@@ -45,9 +45,9 @@ namespace PreLoaderKoGaMa.Services
                 }
                 classLogger.Log("Installed");
             }
-            catch (Exception)
+            catch (Exception err)
             {
-                classLogger.Error("Error on install KoGaMa Tools");
+                classLogger.Error("Error installing KoGaMa Tools: " + err);
             }
         }
     }
