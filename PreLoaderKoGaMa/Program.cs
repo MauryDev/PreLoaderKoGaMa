@@ -1,4 +1,5 @@
 using PreLoaderKoGaMa.Helpers;
+using PreLoaderKoGaMa.Services;
 using System.Diagnostics;
 
 
@@ -9,19 +10,21 @@ namespace PreLoaderKoGaMa
 
         static async Task Main()
         {
-            await HelperLatestVersion.Download();
-#if RELEASE
-            var kogamaPath = Path.Combine(PathHelp.LocalPath, "Standalone", "kogama.exe");
+            ConsoleHelper.Log("ServiceManager", "Starting");
+            var Services = new ServiceManager();
+            ConsoleHelper.Log("ServiceManager", "Registering all services");
 
-            var kogamainfo = new ProcessStartInfo(kogamaPath)
-            {
-                Arguments = string.Join(' ', Environment.GetCommandLineArgs())
-            };
-            ConsoleHelper.WriteMessage("KoGaMa", "Opening process");
-            var kogamaexe = Process.Start(kogamainfo);
-            Thread.Sleep(5000);
+            Services.Register<ConsoleTools>();
+            Services.Register<BepinexDownload>();
+            Services.Register<KoGaMaToolsDownload>();
+            Services.LoadExternalPlugins();
+#if RELEASE
+            Services.Register<KoGaMaRun>();
 #endif
-            
+            ConsoleHelper.Log("ServiceManager", "Building all services");
+
+            await Services.Build();
+
         }
     }
 }

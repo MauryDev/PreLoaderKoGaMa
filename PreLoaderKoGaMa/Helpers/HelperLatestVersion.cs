@@ -78,61 +78,12 @@ namespace PreLoaderKoGaMa.Helpers
             var downloadstream = await DownloadLastReleaseFile(author, repository, "KogamaTools.v", version);
             return downloadstream;
         }
-        public static bool CanInstall
-        {
-            get
-            {
-                return !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx"));
-            }
-        }
-        public static async Task Download()
-        {
-            ConsoleHelper.WriteMessage("Download", "Checking if is installed all dependencies");
-
-            if (!CanInstall)
-            {
-                ConsoleHelper.WriteMessage("Download", "All dependencies is installed");
-                return;
-            }
-            var localPath = PathHelp.LocalPath;
-
-            var installPath = Path.Combine(localPath, "Standalone");
-            var pluginPath = Path.Combine(installPath, "BepInEx", "Plugins");
-            ConsoleHelper.WriteMessage("Download", "Dowloading Bepinex");
-            Stream stream = await DownloadBepinexAsync();
-            ConsoleHelper.WriteMessage("Download", "Dowloading Last Release from KoGaMa Tools");
-            Stream stream2 = await GetLastReleaseStream();
-            ConsoleHelper.WriteMessage("Download", "Load zip Bepinex");
-
-            using ZipArchive zipArchive = new(stream);
-            ConsoleHelper.WriteMessage("Download", "Load zip KoGaMa Tools");
-
-            using ZipArchive zipArchive2 = new(stream2);
-            ConsoleHelper.WriteMessage("Download", "Extract Bepinex");
-
-            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Entries)
-            {
-                string destinationPath = Path.Combine(installPath, zipArchiveEntry.FullName);
-                Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
-                if (!string.IsNullOrEmpty(zipArchiveEntry.Name))
-                {
-                    zipArchiveEntry.ExtractToFile(destinationPath, overwrite: true);
-                }
-            }
-            ConsoleHelper.WriteMessage("Download", "Extract KoGaMa Tools");
-
-            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive2.Entries)
-            {
-                string destinationPath = Path.Combine(pluginPath, zipArchiveEntry.FullName);
-                Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
-
-                if (!string.IsNullOrEmpty(zipArchiveEntry.Name))
-                {
-                    zipArchiveEntry.ExtractToFile(destinationPath, overwrite: true);
-                }
-            }
-            ConsoleHelper.WriteMessage("Download", "Installed");
-
-        }
+        public static bool CanInstallBepinex => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx"));
+            
+        
+        public static bool CanInstallKoGaMaTools => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx/Plugins/KoGaMaTools"));
+        
+   
+        
     }
 }
