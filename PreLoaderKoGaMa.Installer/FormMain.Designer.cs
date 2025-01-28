@@ -188,7 +188,7 @@
             // 
             backgroundWorker_install.DoWork += backgroundWorker_install_DoWork;
             // 
-            // Form1
+            // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -205,7 +205,8 @@
             Controls.Add(checkBox_www);
             Controls.Add(checkBox_br);
             FormBorderStyle = FormBorderStyle.Fixed3D;
-            Name = "Form1";
+            MaximizeBox = false;
+            Name = "FormMain";
             ShowIcon = false;
             Text = "PreLoader KoGaMa Installer";
             ResumeLayout(false);

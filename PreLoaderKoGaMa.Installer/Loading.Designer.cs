@@ -54,6 +54,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(329, 80);
             Controls.Add(progressBar1);
             Controls.Add(label1);
