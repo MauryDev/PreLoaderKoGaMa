@@ -18,6 +18,7 @@ namespace PreLoaderKoGaMa
             LogServiceStatus("Building all services");
 
             await services.Build();
+            Thread.Sleep(5000);
         }
 
         private static void LogServiceStatus(string status)

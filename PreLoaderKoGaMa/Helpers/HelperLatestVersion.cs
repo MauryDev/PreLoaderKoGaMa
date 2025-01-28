@@ -56,13 +56,13 @@ namespace PreLoaderKoGaMa.Helpers
                 throw new Exception("Erro ao obter a versão pela API", ex);
             }
         }
-        static string GetURLLastRelease(string author, string repository, string prefixfile, string version)
+        static string GetURLLastRelease(string prefixfile, string version)
         {
-            if (string.IsNullOrEmpty(author) || string.IsNullOrEmpty(repository) || string.IsNullOrEmpty(version))
+            if (string.IsNullOrEmpty(version))
             {
                 throw new ArgumentException("Parâmetros não podem ser nulos ou vazios");
             }
-            return $"https://github.com/{author}/{repository}/releases/latest/download/{prefixfile}{version}.zip";
+            return $"https://github.com/{KoGaMaTools.Author}/{KoGaMaTools.Repository}/releases/latest/download/{prefixfile}{version}.zip";
         }
         public static async Task<Stream> DownloadLastReleaseFile(string prefixfile, string version)
         {
@@ -71,15 +71,14 @@ namespace PreLoaderKoGaMa.Helpers
                 throw new ArgumentException("Parâmetros não podem ser nulos ou vazios");
             }
             using HttpClient client = new();
-            return await client.GetStreamAsync(GetURLLastRelease(KoGaMaTools.Author, KoGaMaTools.Repository, prefixfile, version));
+            return await client.GetStreamAsync(GetURLLastRelease(prefixfile, version));
         }
         public static async Task<Stream> DownloadBepinexAsync()
         {
             using HttpClient client = new();
-            var url = GithubRawHelper.GetUrl(PreLoaderKoGaMa, "PreloaderKoGaMa/src/be.692+851521c.zip");
-            HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-            response.EnsureSuccessStatusCode();
-            Stream stream = await response.Content.ReadAsStreamAsync();
+            var url = GithubRawHelper.GetUrl(PreLoaderKoGaMa, "PreLoaderKoGaMa/src/be.692+851521c.zip");
+            var stream = await client.GetStreamAsync(url);
+            
             return stream;
         }
         public static async Task<Stream> GetLastReleaseStream()

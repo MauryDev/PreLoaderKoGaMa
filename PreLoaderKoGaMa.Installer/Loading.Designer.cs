@@ -36,7 +36,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Consolas", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(15, 15);
+            label1.Location = new Point(5, 15);
             label1.Name = "label1";
             label1.Size = new Size(63, 19);
             label1.TabIndex = 0;
@@ -44,9 +44,10 @@
             // 
             // progressBar1
             // 
-            progressBar1.Location = new Point(20, 40);
+            progressBar1.Location = new Point(5, 40);
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(305, 23);
+            progressBar1.Style = ProgressBarStyle.Continuous;
             progressBar1.TabIndex = 1;
             // 
             // Loading

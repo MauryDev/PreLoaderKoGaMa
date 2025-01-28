@@ -1,5 +1,8 @@
 ﻿
 
+using System.Text.Encodings.Web;
+using System.Web;
+
 namespace PreLoaderKoGaMa.Helpers
 {
     internal class GithubRawHelper
@@ -17,7 +20,8 @@ namespace PreLoaderKoGaMa.Helpers
         }
         public static string GetUrl(string author, string repository, string branch, string path)
         {
-            return $"https://raw.githubusercontent.com/{author}/{repository}/refs/heads/{branch}/{path}";
+           
+            return $"https://github.com/{author}/{repository}/raw/refs/heads/{branch}/{path}";
         }
         public static string GetUrlCurrent(string path)
         {

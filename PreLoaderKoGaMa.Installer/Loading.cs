@@ -35,6 +35,12 @@ namespace PreLoaderKoGaMa.Installer
         private void Loading_Shown(object sender, EventArgs e)
         {
             RunCallback?.Invoke();
+            if (Owner != null && StartPosition == FormStartPosition.WindowsDefaultLocation)
+            {
+                int offset = Owner.OwnedForms.Length * 38;  // approx. 10mm
+                Point p = new Point(Owner.Left + Owner.Width / 2 - Width / 2 + offset, Owner.Top + Owner.Height / 2 - Height / 2 + offset);
+                this.Location = p;
+            }
         }
     }
 }

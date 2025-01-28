@@ -108,7 +108,7 @@ namespace PreLoaderKoGaMa.Installer
 
             using HttpClient httpClient = new();
             loading.NextState("Downloading PreLoaderKoGaMa archive");
-            using var stream = await httpClient.GetStreamAsync("https://raw.githubusercontent.com/MauryDev/PreLoaderKoGaMa/refs/heads/master/PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip");
+            using var stream = await httpClient.GetStreamAsync(GithubRawHelper.GetUrlCurrent("PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip") );
             loading.NextState("Loading PreLoaderKoGaMa archive");
 
             using var zip = new ZipArchive(stream);
@@ -136,9 +136,12 @@ namespace PreLoaderKoGaMa.Installer
             if (CustomEnable)
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from custom path");
-
-                var pathlauncher = PathHelper.GetLauncher(customPath);
-                UninstallHelper.Uninstall(pathlauncher, zip);
+                if (Directory.Exists(customPath))
+                {
+                    var pathlauncher = PathHelper.GetLauncher(customPath);
+                    UninstallHelper.Uninstall(pathlauncher, zip);
+                }
+                
             }
             loading.NextState("PreLoaderKoGaMa uninstallation successful");
             Thread.Sleep(5000);
@@ -168,6 +171,8 @@ namespace PreLoaderKoGaMa.Installer
             {
                 RunCallback = () => backgroundWorker_install.RunWorkerAsync(2)
             };
+            //loading.StartPosition = FormStartPosition.CenterScreen;
+
             loading.ShowDialog(this);
         }
     }
