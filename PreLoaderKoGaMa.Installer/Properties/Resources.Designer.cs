@@ -101,6 +101,19 @@ namespace PreLoaderKoGaMa.Installer.Properties {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a {
+        ///  &quot;Author&quot;: &quot;MauryDev&quot;,
+        ///  &quot;Repository&quot;: &quot;PreLoaderKoGaMa&quot;,
+        ///  &quot;Branch&quot;: &quot;master&quot;
+        ///}.
+        /// </summary>
+        internal static string githubconfig {
+            get {
+                return ResourceManager.GetString("githubconfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap open_folder {

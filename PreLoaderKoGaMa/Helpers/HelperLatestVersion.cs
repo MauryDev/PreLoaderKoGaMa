@@ -6,6 +6,18 @@ namespace PreLoaderKoGaMa.Helpers
 {
     public static class HelperLatestVersion
     {
+        internal static GithubRawHelper.GithubRepositoryInfo PreLoaderKoGaMa = new() {
+            Author = "MauryDev",
+            Repository = "PreLoaderKoGaMa",
+            Branch = "master"
+        };
+        internal static GithubRawHelper.GithubRepositoryInfo KoGaMaTools = new()
+        {
+            Author = "Beckowl",
+            Repository = "KogamaTools",
+            Branch = "master"
+        };
+
         public static string? GetVersion(string rawText)
         {
             if (string.IsNullOrEmpty(rawText))
@@ -25,9 +37,9 @@ namespace PreLoaderKoGaMa.Helpers
             }
         }
 
-        public static async Task<string?> GetVersionByAPI(string author, string repository, string branch, string path)
+        public static async Task<string?> GetVersionByAPI(string path)
         {
-            if (string.IsNullOrEmpty(author) || string.IsNullOrEmpty(repository) || string.IsNullOrEmpty(branch) || string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentException("Parâmetros não podem ser nulos ou vazios");
             }
@@ -35,7 +47,7 @@ namespace PreLoaderKoGaMa.Helpers
             using HttpClient client = new();
             try
             {
-                string rawText = await client.GetStringAsync($"https://raw.githubusercontent.com/{author}/{repository}/refs/heads/{branch}/{path}");
+                string rawText = await client.GetStringAsync(GithubRawHelper.GetUrl(KoGaMaTools, path));
                 var version = GetVersion(rawText);
                 return version;
             }
@@ -52,19 +64,19 @@ namespace PreLoaderKoGaMa.Helpers
             }
             return $"https://github.com/{author}/{repository}/releases/latest/download/{prefixfile}{version}.zip";
         }
-        public static async Task<Stream> DownloadLastReleaseFile(string author, string repository, string prefixfile, string version)
+        public static async Task<Stream> DownloadLastReleaseFile(string prefixfile, string version)
         {
-            if (string.IsNullOrEmpty(author) || string.IsNullOrEmpty(repository) || string.IsNullOrEmpty(version))
+            if (string.IsNullOrEmpty(version))
             {
                 throw new ArgumentException("Parâmetros não podem ser nulos ou vazios");
             }
             using HttpClient client = new();
-            return await client.GetStreamAsync(GetURLLastRelease(author, repository, prefixfile, version));
+            return await client.GetStreamAsync(GetURLLastRelease(KoGaMaTools.Author, KoGaMaTools.Repository, prefixfile, version));
         }
         public static async Task<Stream> DownloadBepinexAsync()
         {
             using HttpClient client = new();
-            string url = "https://cdn.discordapp.com/attachments/1304111711497752636/1333398230582431855/be.692851521c.zip?ex=6798bf5f&is=67976ddf&hm=b3c1b230a468c2b539399de7b9aa3db50500c8ef37038e6622b5150cf90dc243&";
+            var url = GithubRawHelper.GetUrl(PreLoaderKoGaMa, "PreloaderKoGaMa/src/be.692+851521c.zip");
             HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
             Stream stream = await response.Content.ReadAsStreamAsync();
@@ -72,10 +84,9 @@ namespace PreLoaderKoGaMa.Helpers
         }
         public static async Task<Stream> GetLastReleaseStream()
         {
-            string author = "Beckowl",
-                repository = "KogamaTools";
-            var version = await GetVersionByAPI(author, repository, "master", "src/ModInfo.cs");
-            var downloadstream = await DownloadLastReleaseFile(author, repository, "KogamaTools.v", version);
+           
+            var version = await GetVersionByAPI("src/ModInfo.cs");
+            var downloadstream = await DownloadLastReleaseFile("KogamaTools.v", version);
             return downloadstream;
         }
         public static bool CanInstallBepinex => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx"));
