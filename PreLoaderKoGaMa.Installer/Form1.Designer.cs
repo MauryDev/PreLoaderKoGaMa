@@ -39,6 +39,7 @@
             button_uninstall = new Button();
             label2 = new Label();
             folderBrowserDialog1 = new FolderBrowserDialog();
+            backgroundWorker_install = new System.ComponentModel.BackgroundWorker();
             SuspendLayout();
             // 
             // checkBox_br
@@ -102,7 +103,7 @@
             button_install.ForeColor = SystemColors.ButtonHighlight;
             button_install.Image = Properties.Resources.download;
             button_install.ImageAlign = ContentAlignment.MiddleRight;
-            button_install.Location = new Point(9, 193);
+            button_install.Location = new Point(9, 229);
             button_install.Name = "button_install";
             button_install.Size = new Size(337, 44);
             button_install.TabIndex = 4;
@@ -133,7 +134,7 @@
             textBox_custom.Multiline = true;
             textBox_custom.Name = "textBox_custom";
             textBox_custom.ReadOnly = true;
-            textBox_custom.Size = new Size(283, 33);
+            textBox_custom.Size = new Size(283, 71);
             textBox_custom.TabIndex = 6;
             // 
             // button_selectcustomfolder
@@ -145,7 +146,7 @@
             button_selectcustomfolder.Image = Properties.Resources.open_folder;
             button_selectcustomfolder.Location = new Point(301, 152);
             button_selectcustomfolder.Name = "button_selectcustomfolder";
-            button_selectcustomfolder.Size = new Size(48, 35);
+            button_selectcustomfolder.Size = new Size(48, 71);
             button_selectcustomfolder.TabIndex = 7;
             button_selectcustomfolder.UseVisualStyleBackColor = false;
             button_selectcustomfolder.Click += button2_Click;
@@ -158,7 +159,7 @@
             button_uninstall.ForeColor = SystemColors.ButtonHighlight;
             button_uninstall.Image = Properties.Resources.download;
             button_uninstall.ImageAlign = ContentAlignment.MiddleRight;
-            button_uninstall.Location = new Point(9, 243);
+            button_uninstall.Location = new Point(9, 279);
             button_uninstall.Name = "button_uninstall";
             button_uninstall.Size = new Size(337, 44);
             button_uninstall.TabIndex = 8;
@@ -166,6 +167,7 @@
             button_uninstall.TextAlign = ContentAlignment.MiddleLeft;
             button_uninstall.TextImageRelation = TextImageRelation.ImageBeforeText;
             button_uninstall.UseVisualStyleBackColor = false;
+            button_uninstall.Click += button_uninstall_Click;
             // 
             // label2
             // 
@@ -182,12 +184,16 @@
             // 
             folderBrowserDialog1.RootFolder = Environment.SpecialFolder.LocalApplicationData;
             // 
+            // backgroundWorker_install
+            // 
+            backgroundWorker_install.DoWork += backgroundWorker_install_DoWork;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
-            ClientSize = new Size(361, 293);
+            ClientSize = new Size(361, 329);
             Controls.Add(label2);
             Controls.Add(button_uninstall);
             Controls.Add(button_selectcustomfolder);
@@ -219,5 +225,6 @@
         private Button button_uninstall;
         private Label label2;
         private FolderBrowserDialog folderBrowserDialog1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker_install;
     }
 }
