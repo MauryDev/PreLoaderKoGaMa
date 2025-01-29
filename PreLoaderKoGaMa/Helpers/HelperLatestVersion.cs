@@ -1,17 +1,16 @@
 ﻿
-using System.IO.Compression;
 using System.Text.RegularExpressions;
 
 namespace PreLoaderKoGaMa.Helpers
 {
     public static class HelperLatestVersion
     {
-        internal static GithubRawHelper.GithubRepositoryInfo PreLoaderKoGaMa = new() {
+        internal static GithubRepositoryInfo PreLoaderKoGaMa = new() {
             Author = "MauryDev",
             Repository = "PreLoaderKoGaMa",
             Branch = "master"
         };
-        internal static GithubRawHelper.GithubRepositoryInfo KoGaMaTools = new()
+        internal static GithubRepositoryInfo KoGaMaTools = new()
         {
             Author = "Beckowl",
             Repository = "KogamaTools",
@@ -75,18 +74,14 @@ namespace PreLoaderKoGaMa.Helpers
         }
         public static async Task<Stream> DownloadBepinexAsync()
         {
-            using HttpClient client = new();
-            var url = GithubRawHelper.GetUrl(PreLoaderKoGaMa, "PreLoaderKoGaMa/src/be.692+851521c.zip");
-            var stream = await client.GetStreamAsync(url);
             
-            return stream;
+            return await GithubRawHelper.GetStream(PreLoaderKoGaMa, "PreLoaderKoGaMa/src/be.692+851521c.zip");
         }
         public static async Task<Stream> GetLastReleaseStream()
         {
            
             var version = await GetVersionByAPI("src/ModInfo.cs");
-            var downloadstream = await DownloadLastReleaseFile("KogamaTools.v", version);
-            return downloadstream;
+            return await DownloadLastReleaseFile("KogamaTools.v", version);
         }
         public static bool CanInstallBepinex => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx"));
             

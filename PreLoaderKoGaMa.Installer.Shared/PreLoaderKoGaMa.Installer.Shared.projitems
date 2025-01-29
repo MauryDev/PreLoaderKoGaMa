@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>44c89863-e8a1-4dc6-bc42-8b4029671f05</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>PreLoaderKoGaMa.Installer.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)helpers\GithubRawHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)helpers\GithubRepositoryInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\InstallHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)helpers\KoGaMaServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)helpers\PathHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)helpers\UninstallHelper.cs" />
+  </ItemGroup>
+</Project>

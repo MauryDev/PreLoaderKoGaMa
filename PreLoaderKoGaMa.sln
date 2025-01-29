@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreLoaderKoGaMa", "PreLoade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreLoaderKoGaMa.Installer", "PreLoaderKoGaMa.Installer\PreLoaderKoGaMa.Installer.csproj", "{E9D2C9F8-6CF6-440F-917D-DA8BB1444351}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PreLoaderKoGaMa.Installer.Shared", "PreLoaderKoGaMa.Installer.Shared\PreLoaderKoGaMa.Installer.Shared.shproj", "{44C89863-E8A1-4DC6-BC42-8B4029671F05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		PreLoaderKoGaMa.Installer.Shared\PreLoaderKoGaMa.Installer.Shared.projitems*{44c89863-e8a1-4dc6-bc42-8b4029671f05}*SharedItemsImports = 13
+		PreLoaderKoGaMa.Installer.Shared\PreLoaderKoGaMa.Installer.Shared.projitems*{e9d2c9f8-6cf6-440f-917d-da8bb1444351}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

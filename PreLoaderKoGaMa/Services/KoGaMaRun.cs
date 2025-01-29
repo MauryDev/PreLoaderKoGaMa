@@ -7,10 +7,10 @@ namespace PreLoaderKoGaMa.Services
     internal class KoGaMaRun
     {
 
-        public ConsoleTools.ClassPrint classLogger;
+        public ConsoleTools consoleTools;
         public void Init(ConsoleTools consoleTools)
         {
-            classLogger = consoleTools.CreateClassLog<KoGaMaRun>();
+            this.consoleTools = consoleTools;
         }
         public void Run()
         {
@@ -20,7 +20,7 @@ namespace PreLoaderKoGaMa.Services
             {
                 Arguments = string.Join(' ', Environment.GetCommandLineArgs())
             };
-            classLogger.Log("Opening process");
+            consoleTools.Log("Opening process");
             Process.Start(kogamainfo);
             Thread.Sleep(5000);
         }

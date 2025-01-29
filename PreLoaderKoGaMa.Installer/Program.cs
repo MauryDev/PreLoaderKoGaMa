@@ -1,4 +1,4 @@
-using PreLoaderKoGaMa.Installer.Helpers;
+using PreLoaderKoGaMa.Installer.Shared.Helpers;
 using PreLoaderKoGaMa.Installer.Properties;
 using System.Text.Json;
 
@@ -10,7 +10,7 @@ namespace PreLoaderKoGaMa.Installer
         static void Main()
         {
             
-            GithubRawHelper.Current = JsonSerializer.Deserialize<GithubRawHelper.GithubRepositoryInfo>(Resources.githubconfig);
+            GithubRawHelper.Current = JsonSerializer.Deserialize<GithubRepositoryInfo>(Resources.githubconfig);
            
 
             ApplicationConfiguration.Initialize();

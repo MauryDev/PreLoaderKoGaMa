@@ -6,13 +6,13 @@ namespace PreLoaderKoGaMa.Services
 {
     public class BepinexDownload
     {
-        public ConsoleTools.ClassPrint classLogger;
+        public ConsoleTools classLogger;
         public string BepinexInstallPath => PathHelp.KoGaMaStandalonePath;
         public string BepinexPath => Path.Combine(PathHelp.KoGaMaStandalonePath, "BepInEx");
 
         public void Init(ConsoleTools consoleTools)
         {
-            classLogger = consoleTools.CreateClassLog<BepinexDownload>();
+            classLogger = consoleTools;
         }
 
         public async Task RunAsync()

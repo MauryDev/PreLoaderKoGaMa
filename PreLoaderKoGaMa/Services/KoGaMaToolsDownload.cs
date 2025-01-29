@@ -4,12 +4,12 @@ namespace PreLoaderKoGaMa.Services
 {
     public class KoGaMaToolsDownload
     {
-        public ConsoleTools.ClassPrint classLogger;
+        public ConsoleTools classLogger;
         public string KoGaMaToolsInstallPath;
 
         public void Init(ConsoleTools consoleTools, BepinexDownload bepinexDownload)
         {
-            classLogger = consoleTools.CreateClassLog<KoGaMaToolsDownload>();
+            classLogger = consoleTools;
             KoGaMaToolsInstallPath = Path.Combine(bepinexDownload.BepinexPath, "Plugins");
         }
         public async Task RunAsync()

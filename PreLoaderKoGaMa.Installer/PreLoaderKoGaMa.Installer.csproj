@@ -27,4 +27,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <Import Project="..\PreLoaderKoGaMa.Installer.Shared\PreLoaderKoGaMa.Installer.Shared.projitems" Label="Shared" />
+
 </Project>

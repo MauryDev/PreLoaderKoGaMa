@@ -1,4 +1,4 @@
-using PreLoaderKoGaMa.Installer.Helpers;
+using PreLoaderKoGaMa.Installer.Shared.Helpers;
 using System.Collections;
 using System.IO.Compression;
 
@@ -50,10 +50,8 @@ namespace PreLoaderKoGaMa.Installer
             }
             loading.TotalStep = installlen;
 
-            using HttpClient httpClient = new();
             loading.NextState("Downloading PreLoaderKoGaMa archive");
-            var urlstream = GithubRawHelper.GetUrlCurrent("PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip");
-            using var stream = await httpClient.GetStreamAsync(urlstream);
+            using var stream = await GithubRawHelper.GetStreamCurrent("PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip");
             loading.NextState("Loading PreLoaderKoGaMa archive");
 
             using var zip = new ZipArchive(stream);
@@ -61,26 +59,23 @@ namespace PreLoaderKoGaMa.Installer
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa BR");
 
-                var pathlauncher = PathHelper.GetLauncher(PathHelper.BRPath);
-                InstallHelper.Install(pathlauncher, zip);
+                InstallHelper.Install(KoGaMaServer.BR, zip);
             }
             if (WwwEnable)
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa WWW");
-
-                var pathlauncher = PathHelper.GetLauncher(PathHelper.WWWPath);
-                InstallHelper.Install(pathlauncher, zip);
+                InstallHelper.Install(KoGaMaServer.WWW, zip);
             }
             if (FriendsEnable)
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa Friends");
 
-                var pathlauncher = PathHelper.GetLauncher(PathHelper.FriendsPath);
-                InstallHelper.Install(pathlauncher, zip);
+                InstallHelper.Install(KoGaMaServer.Friends, zip);
             }
             if (CustomEnable)
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to custom path");
+
 
                 var pathlauncher = PathHelper.GetLauncher(customPath);
                 InstallHelper.Install(pathlauncher, zip);
@@ -106,9 +101,10 @@ namespace PreLoaderKoGaMa.Installer
             }
             loading.TotalStep = installlen;
 
-            using HttpClient httpClient = new();
             loading.NextState("Downloading PreLoaderKoGaMa archive");
-            using var stream = await httpClient.GetStreamAsync(GithubRawHelper.GetUrlCurrent("PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip") );
+
+            using var stream = await GithubRawHelper.GetStreamCurrent("PreLoaderKoGaMa.Installer/src/PreLoaderKoGaMa.zip");
+
             loading.NextState("Loading PreLoaderKoGaMa archive");
 
             using var zip = new ZipArchive(stream);
@@ -116,22 +112,19 @@ namespace PreLoaderKoGaMa.Installer
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa BR");
 
-                var pathlauncher = PathHelper.GetLauncher(PathHelper.BRPath);
-                UninstallHelper.Uninstall(pathlauncher, zip);
+                UninstallHelper.Uninstall(KoGaMaServer.BR, zip);
             }
             if (WwwEnable)
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa WWW");
 
-                var pathlauncher = PathHelper.GetLauncher(PathHelper.WWWPath);
-                UninstallHelper.Uninstall(pathlauncher, zip);
+                UninstallHelper.Uninstall(KoGaMaServer.WWW, zip);
             }
             if (FriendsEnable)
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa Friends");
 
-                var pathlauncher = PathHelper.GetLauncher(PathHelper.FriendsPath);
-                UninstallHelper.Uninstall(pathlauncher, zip);
+                UninstallHelper.Uninstall(KoGaMaServer.Friends, zip);
             }
             if (CustomEnable)
             {
@@ -171,7 +164,6 @@ namespace PreLoaderKoGaMa.Installer
             {
                 RunCallback = () => backgroundWorker_install.RunWorkerAsync(2)
             };
-            //loading.StartPosition = FormStartPosition.CenterScreen;
 
             loading.ShowDialog(this);
         }

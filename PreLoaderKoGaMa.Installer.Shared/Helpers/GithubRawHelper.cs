@@ -1,10 +1,10 @@
-﻿
 
-namespace PreLoaderKoGaMa.Helpers;
+
+namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
 
 internal class GithubRawHelper
 {
-
+    
     public static GithubRepositoryInfo Current { get; set; } = new();
     public static async Task<Stream> GetStream(GithubRepositoryInfo github, string path)
     {
@@ -18,7 +18,7 @@ internal class GithubRawHelper
     public static async Task<Stream> GetStreamCurrent(string path)
     {
         using HttpClient client = new();
-        return await GetStream(Current, path);
+        return await GetStream(Current,path);
     }
     public static string GetUrl(GithubRepositoryInfo github, string path)
     {

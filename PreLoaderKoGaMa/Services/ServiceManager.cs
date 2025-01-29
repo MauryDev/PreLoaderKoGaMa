@@ -1,5 +1,6 @@
 ﻿
 using PreLoaderKoGaMa.Helpers;
+using PreLoaderKoGaMa.Services.Tools;
 
 namespace PreLoaderKoGaMa.Services
 {
@@ -8,11 +9,22 @@ namespace PreLoaderKoGaMa.Services
         Dictionary<Type, Type[]> Runners { get; set; }
         Dictionary<Type,object> Instances { get; set; }
         List<object> InstancesList { get; set; }
+        Dictionary<Type,object> ToolList { get; set; }
+
         public ServiceManager()
         {
             Runners = new();
             Instances = new();
             InstancesList = new();
+            ToolList = new()
+            {
+                [typeof(IServiceCurrent)] = new ServiceCurrent()
+            };
+        }
+        void SetCurrent(object current)
+        {
+            var service = ToolList[typeof(IServiceCurrent)];
+            ((ServiceCurrent)service).SetService(current);
         }
         public void Register(Type serviceType)
         {
@@ -39,6 +51,18 @@ namespace PreLoaderKoGaMa.Services
             Register(typeof(T));
 
         }
+        object? GetValueFromType(Type x)
+        {
+            if (ToolList.TryGetValue(x, out var value))
+            {
+                return value;
+            }
+            if (Instances.TryGetValue(x, out var value2))
+            {
+                return value2;
+            }
+            return null;
+        }
         async Task OnInit()
         {
             foreach (var instance in InstancesList)
@@ -47,13 +71,15 @@ namespace PreLoaderKoGaMa.Services
                 var method = type.GetMethod("Init");
                 var method2 = type.GetMethod("InitAsync");
 
-                var args = Runners[type].Select(x => Instances[x]).ToArray();
+                var args = Runners[type].Select(GetValueFromType).ToArray();
                 if (method != null)
                 {
+                    SetCurrent(instance);
                     method.Invoke(instance, args);
                 }
                 else if (method2 != null)
                 {
+                    SetCurrent(instance);
                     await (Task)method2.Invoke(instance, args);
                 }
             }
@@ -68,9 +94,13 @@ namespace PreLoaderKoGaMa.Services
 
                 if (method != null)
                 {
+                    SetCurrent(instance);
+
                     method.Invoke(instance,null);
                 } else if (method2 != null)
                 {
+                    SetCurrent(instance);
+
                     await (Task)method2.Invoke(instance, null);
                 }
             }
@@ -83,14 +113,17 @@ namespace PreLoaderKoGaMa.Services
                 var method = type.GetMethod("Destroy");
                 var method2 = type.GetMethod("DestroyAsync");
 
-                var args = Runners[type].Select(x => Instances[x]).ToArray();
                 if (method != null)
                 {
-                    method.Invoke(instance, args);
+                    SetCurrent(instance);
+
+                    method.Invoke(instance, null);
                 }
                 else if (method2 != null)
                 {
-                    await (Task)method2.Invoke(instance, args);
+                    SetCurrent(instance);
+
+                    await (Task)method2.Invoke(instance, null);
                 }
             }
         }
