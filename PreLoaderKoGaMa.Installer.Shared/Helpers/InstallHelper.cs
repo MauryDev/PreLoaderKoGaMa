@@ -33,7 +33,7 @@ internal class InstallHelper
                 break;
         }
         if (Directory.Exists(path))
-            Install(path, zipArchive);
+            Install(PathHelper.GetLauncher(path), zipArchive);
     }
 }
 

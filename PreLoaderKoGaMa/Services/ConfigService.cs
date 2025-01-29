@@ -20,13 +20,15 @@ namespace PreLoaderKoGaMa.Services
 
         static void CreateIfNotExists()
         {
-            if (!Directory.Exists(PathHelp.ConfigPath))
+            var configpath = PathHelp.ConfigPath;
+            var configfile = ConfigFile;
+            if (!Directory.Exists(configpath))
             {
-                Directory.CreateDirectory(PathHelp.ConfigPath);
+                Directory.CreateDirectory(configpath);
             }
-            if (!File.Exists(ConfigFile))
+            if (!File.Exists(configfile))
             {
-                File.WriteAllText(ConfigFile, "{}");
+                File.WriteAllText(configfile, "{}");
             }
         }
         public static string? SRead(string section, string key)
