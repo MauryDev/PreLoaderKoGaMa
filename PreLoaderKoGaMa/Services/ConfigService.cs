@@ -9,7 +9,7 @@ namespace PreLoaderKoGaMa.Services
     internal class ConfigService
     {
         
-        public static string ConfigFile => Path.Combine(PathHelp.PluginsPath, "config.json");
+        public static string ConfigFile => Path.Combine(PathHelp.ConfigPath, "config.json");
 
         IServiceCurrent current;
         public void Init(IServiceCurrent serviceCurrent)
@@ -20,6 +20,10 @@ namespace PreLoaderKoGaMa.Services
 
         static void CreateIfNotExists()
         {
+            if (!Directory.Exists(PathHelp.ConfigPath))
+            {
+                Directory.CreateDirectory(PathHelp.ConfigPath);
+            }
             if (!File.Exists(ConfigFile))
             {
                 File.WriteAllText(ConfigFile, "{}");
