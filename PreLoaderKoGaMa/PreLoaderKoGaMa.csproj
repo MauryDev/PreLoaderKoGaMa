@@ -13,12 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="LauncherCore.dll">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="src\" />
   </ItemGroup>
 
