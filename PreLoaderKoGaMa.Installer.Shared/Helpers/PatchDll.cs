@@ -2,17 +2,18 @@
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using System;
 
 namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
 
 public static class PatchDll
 {
-    public static void Inject(IList<Instruction> instructions, Instruction[] newInstructions)
+    public static void Inject(IList<Instruction> instructions, Instruction[] newInstructions, int indexstart)
     {
         var len = newInstructions.Length;
         for (int i = 0; i < len; i++)
         {
-            instructions.Insert(42 + i, newInstructions[i]);
+            instructions.Insert(indexstart + i, newInstructions[i]);
         }
     }
     public static void Patch(string launchercorePath)
@@ -47,11 +48,8 @@ public static class PatchDll
                 Instruction.Create(OpCodes.Call, importedCombineMethod),
             };
 
-            for (int i = 0; i < newInstructions.Length; i++)
-            {
-                instructions.Insert(42 + i, newInstructions[i]);
-            }
-
+            
+            Inject(instructions, newInstructions,42);
             assembly.Write();
         }
     }
