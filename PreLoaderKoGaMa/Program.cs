@@ -19,6 +19,7 @@ namespace PreLoaderKoGaMa
         {
             var args = Environment.GetCommandLineArgs();
             var argc = args.Length;
+            Console.WriteLine("PreLoaderKoGaMa");
             if (argc == 2)
             {
                 var arg = args[1];
@@ -32,7 +33,7 @@ namespace PreLoaderKoGaMa
                     Thread.Sleep(5000);
                 }
             }
-            else
+            else if (argc > 2)
             {
                 await RunKoGaMa(true);
                 Thread.Sleep(5000);
