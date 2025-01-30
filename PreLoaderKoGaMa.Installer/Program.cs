@@ -11,7 +11,7 @@ namespace PreLoaderKoGaMa.Installer
         {
             
             GithubRawHelper.Current = JsonSerializer.Deserialize<GithubRepositoryInfo>(Resources.githubconfig);
-           
+            
 
             ApplicationConfiguration.Initialize();
             Application.Run(new FormMain());

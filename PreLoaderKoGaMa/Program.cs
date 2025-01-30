@@ -17,7 +17,33 @@ namespace PreLoaderKoGaMa
         const int SW_SHOW = 5;
         static async Task Main()
         {
-            if (ConfigService.SRead("PreLoaderKoGaMa","Debug") == "false")
+            var args = Environment.GetCommandLineArgs();
+            var argc = args.Length;
+            if (argc == 2)
+            {
+                var arg = args[1];
+                if (arg == "uninstall")
+                {
+                    PluginsHelper.UninstallExternalPlugins();
+
+                } else if (arg == "install")
+                {
+                    await RunKoGaMa(false);
+                    Thread.Sleep(5000);
+                }
+            }
+            else
+            {
+                await RunKoGaMa(true);
+                Thread.Sleep(5000);
+
+            }
+
+
+        }
+        async static Task RunKoGaMa(bool openKoGaMa)
+        {
+            if (ConfigService.SRead("PreLoaderKoGaMa", "Debug") == "false")
             {
                 var handle = GetConsoleWindow();
                 ShowWindow(handle, SW_HIDE);
@@ -26,27 +52,28 @@ namespace PreLoaderKoGaMa
             var services = new ServiceManager();
             LogServiceStatus("Registering all services");
 
-            RegisterServices(services);
-            
+            RegisterServices(services, openKoGaMa);
+
             LogServiceStatus("Building all services");
 
             await services.Build();
-            Thread.Sleep(5000);
         }
-
         private static void LogServiceStatus(string status)
         {
             ConsoleHelper.Log("ServiceManager", status);
         }
 
-        private static void RegisterServices(ServiceManager services)
+        private static void RegisterServices(ServiceManager services, bool openKoGaMa)
         {
             services.Register<ConsoleTools>();
             services.Register<BepinexDownload>();
             services.Register<KoGaMaToolsDownload>();
-            services.LoadExternalPlugins();
+            services.InitExternalPlugins();
 #if RELEASE
-            services.Register<KoGaMaRun>();
+            if (openKoGaMa)
+            {
+                services.Register<KoGaMaRun>();
+            }
 #endif
         }
     }
