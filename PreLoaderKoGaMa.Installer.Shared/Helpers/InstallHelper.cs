@@ -5,16 +5,19 @@ namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
 
 internal class InstallHelper
 {
-    public static void Install(string path, ZipArchive zipArchive)
+    public static void Install(string launchPath, ZipArchive zipArchive)
     {
         foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Entries)
         {
-            string destinationPath = Path.Combine(path, zipArchiveEntry.FullName);
+            string destinationPath = Path.Combine(launchPath, zipArchiveEntry.FullName);
             Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
             if (string.IsNullOrEmpty(zipArchiveEntry.Name))
                 continue;
             zipArchiveEntry.ExtractToFile(destinationPath, overwrite: true);
         }
+        Directory.CreateDirectory(Path.Combine(launchPath, "Config"));
+        Directory.CreateDirectory(Path.Combine(launchPath, "Plugins"));
+
     }
 
     public static void Install(KoGaMaServer kogamaServer, ZipArchive zipArchive)
