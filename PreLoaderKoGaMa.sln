@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreLoaderKoGaMa.Installer",
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PreLoaderKoGaMa.Installer.Shared", "PreLoaderKoGaMa.Installer.Shared\PreLoaderKoGaMa.Installer.Shared.shproj", "{44C89863-E8A1-4DC6-BC42-8B4029671F05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{30B850C1-211C-4F8A-BBFB-A57400FA508F}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
