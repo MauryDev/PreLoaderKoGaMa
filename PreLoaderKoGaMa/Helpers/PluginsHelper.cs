@@ -53,7 +53,7 @@ namespace PreLoaderKoGaMa.Helpers
 
         public static Type? GetPluginType(string dllPath)
         {
-            var assembly = Assembly.LoadFrom(dllPath);
+            var assembly = Assembly.LoadFile(dllPath);
             return assembly.GetTypes().FirstOrDefault(x => typeof(IPlugin).IsAssignableFrom(x));
         }
 

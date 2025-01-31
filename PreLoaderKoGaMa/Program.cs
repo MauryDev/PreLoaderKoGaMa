@@ -23,6 +23,8 @@ namespace PreLoaderKoGaMa
             AppDomain.CurrentDomain.AssemblyResolve += (sender, eventArgs) =>
             {
                 var name = new AssemblyName(eventArgs.Name).Name ;
+                if (!name.EndsWith(".dll"))
+                    name += ".dll";
                 var pathdll = Directory.EnumerateFiles(PathHelp.PluginsPath, "*.dll", SearchOption.AllDirectories).Where((v) => Path.GetFileName(v) == name).FirstOrDefault();
                 return pathdll == null ? null : Assembly.LoadFile(pathdll) ;
             };

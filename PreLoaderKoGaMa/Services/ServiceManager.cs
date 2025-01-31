@@ -7,9 +7,9 @@ namespace PreLoaderKoGaMa.Services
     public class ServiceManager
     {
         Dictionary<Type, Type[]> Runners { get; set; }
-        Dictionary<Type,object> Instances { get; set; }
+        Dictionary<Type, object> Instances { get; set; }
         List<object> InstancesList { get; set; }
-        Dictionary<Type,object> ToolList { get; set; }
+        Dictionary<Type, object> ToolList { get; set; }
 
         public ServiceManager()
         {
@@ -28,6 +28,9 @@ namespace PreLoaderKoGaMa.Services
         }
         public void Register(Type serviceType)
         {
+            if (Runners.ContainsKey(serviceType))
+                return;
+
             var InitInfo = serviceType.GetMethod("Init");
             var InitAsyncInfo = serviceType.GetMethod("InitAsync");
             if (InitInfo == null && InitAsyncInfo == null)
@@ -49,7 +52,6 @@ namespace PreLoaderKoGaMa.Services
         public void Register<T>() where T : new()
         {
             Register(typeof(T));
-
         }
         object? GetValueFromType(Type x)
         {
@@ -95,12 +97,11 @@ namespace PreLoaderKoGaMa.Services
                 if (method != null)
                 {
                     SetCurrent(instance);
-
-                    method.Invoke(instance,null);
-                } else if (method2 != null)
+                    method.Invoke(instance, null);
+                }
+                else if (method2 != null)
                 {
                     SetCurrent(instance);
-
                     await (Task)method2.Invoke(instance, null);
                 }
             }
@@ -116,20 +117,17 @@ namespace PreLoaderKoGaMa.Services
                 if (method != null)
                 {
                     SetCurrent(instance);
-
                     method.Invoke(instance, null);
                 }
                 else if (method2 != null)
                 {
                     SetCurrent(instance);
-
                     await (Task)method2.Invoke(instance, null);
                 }
             }
         }
         public async Task Build()
         {
-            
             foreach (var runner in Runners)
             {
                 var type = runner.Key;
@@ -145,6 +143,42 @@ namespace PreLoaderKoGaMa.Services
             Runners.Clear();
             Instances.Clear();
             InstancesList.Clear();
+        }
+
+        public void Unregister(Type serviceType)
+        {
+            if (Runners.ContainsKey(serviceType))
+            {
+                Instances.Remove(serviceType);
+                var instance = InstancesList.FirstOrDefault(i => i.GetType() == serviceType);
+                if (instance != null)
+                {
+                    InstancesList.Remove(instance);
+                }
+                Runners.Remove(serviceType);
+            }
+        }
+
+        public void Unregister<T>() where T : new()
+        {
+            Unregister(typeof(T));
+        }
+
+        public T? GetService<T>() where T : class
+        {
+            Instances.TryGetValue(typeof(T), out var service);
+            return service as T;
+        }
+
+        public void AddTool<T>(T tool) where T : class
+        {
+            ToolList[typeof(T)] = tool;
+        }
+
+        public T? GetTool<T>() where T : class
+        {
+            ToolList.TryGetValue(typeof(T), out var tool);
+            return tool as T;
         }
     }
 }
