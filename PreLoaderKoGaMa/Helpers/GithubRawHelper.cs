@@ -2,7 +2,7 @@
 
 namespace PreLoaderKoGaMa.Helpers;
 
-internal class GithubRawHelper
+public class GithubRawHelper
 {
 
     public static GithubRepositoryInfo Current { get; set; } = new();

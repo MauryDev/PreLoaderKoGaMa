@@ -1,11 +1,20 @@
 ﻿using PreLoaderKoGaMa.Helpers;
+using PreLoaderKoGaMa.Services;
 using System.IO.Compression;
 
-
-namespace PreLoaderKoGaMa.Services
+namespace PreLoaderKoGaMa.Plugins.BepInEx
 {
     public class BepinexDownload
     {
+        public static bool CanInstallBepinex => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx"));
+
+        internal static GithubRepositoryInfo PreLoaderKoGaMa = new()
+        {
+            Author = "MauryDev",
+            Repository = "PreLoaderKoGaMa",
+            Branch = "master"
+        };
+
         public ConsoleTools classLogger;
         public string BepinexInstallPath => PathHelp.KoGaMaStandalonePath;
         public string BepinexPath => Path.Combine(PathHelp.KoGaMaStandalonePath, "BepInEx");
@@ -20,7 +29,7 @@ namespace PreLoaderKoGaMa.Services
             try
             {
                 classLogger.Log("Checking if Bepinex is installed");
-                if (!HelperLatestVersion.CanInstallBepinex)
+                if (!CanInstallBepinex)
                 {
                     classLogger.Log("All dependencies are installed");
                     return;
@@ -28,7 +37,7 @@ namespace PreLoaderKoGaMa.Services
 
                 var localPath = BepinexInstallPath;
                 classLogger.Log("Downloading Bepinex");
-                Stream bepinexStream = await HelperLatestVersion.DownloadBepinexAsync();
+                Stream bepinexStream = await DownloadBepinexAsync();
 
                 classLogger.Log("Loading Bepinex zip");
                 using ZipArchive bepinexZipArchive = new(bepinexStream);
@@ -50,6 +59,12 @@ namespace PreLoaderKoGaMa.Services
             {
                 classLogger.Error("Error installing Bepinex: " + err);
             }
+        }
+
+        static async Task<Stream> DownloadBepinexAsync()
+        {
+
+            return await GithubRawHelper.GetStream(PreLoaderKoGaMa, "PreLoaderKoGaMa/src/be.692+851521c.zip");
         }
     }
 }

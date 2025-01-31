@@ -1,13 +1,17 @@
 ﻿using PreLoaderKoGaMa.Helpers;
+using PreLoaderKoGaMa.Services;
+
 using System.IO.Compression;
-namespace PreLoaderKoGaMa.Services
+
+
+namespace PreLoaderKoGaMa.Plugins.KoGaMaTools
 {
     public class KoGaMaToolsDownload
     {
         public ConsoleTools classLogger;
         public string KoGaMaToolsInstallPath;
 
-        public void Init(ConsoleTools consoleTools, BepinexDownload bepinexDownload)
+        public void Init(ConsoleTools consoleTools, BepInEx.BepinexDownload bepinexDownload)
         {
             classLogger = consoleTools;
             KoGaMaToolsInstallPath = Path.Combine(bepinexDownload.BepinexPath, "Plugins");

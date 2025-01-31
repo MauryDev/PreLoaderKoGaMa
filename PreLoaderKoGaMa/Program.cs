@@ -1,6 +1,7 @@
 using PreLoaderKoGaMa.Helpers;
 using PreLoaderKoGaMa.Services;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 
@@ -13,69 +14,146 @@ namespace PreLoaderKoGaMa
 
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         const int SW_HIDE = 0;
         const int SW_SHOW = 5;
+
         static async Task Main()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, eventArgs) =>
+            {
+                var name = new AssemblyName(eventArgs.Name).Name ;
+                var pathdll = Directory.EnumerateFiles(PathHelp.PluginsPath, "*.dll", SearchOption.AllDirectories).Where((v) => Path.GetFileName(v) == name).FirstOrDefault();
+                return pathdll == null ? null : Assembly.LoadFile(pathdll) ;
+            };
             var args = Environment.GetCommandLineArgs();
             var argc = args.Length;
-            Console.WriteLine("PreLoaderKoGaMa");
-            if (argc == 2)
+
+            switch (argc)
             {
-                var arg = args[1];
-                if (arg == "uninstall")
-                {
-                    PluginsHelper.UninstallExternalPlugins();
-
-                } else if (arg == "install")
-                {
-                    await RunKoGaMa(false);
-                    Thread.Sleep(5000);
-                }
+                case 2:
+                    await HandleTwoArgs(args[1]);
+                    break;
+                case 3:
+                    await HandleThreeArgs(args[1], args[2]);
+                    break;
+                default:
+                    if (argc > 3)
+                    {
+                        await Normal();
+                    }
+                    break;
             }
-            else if (argc > 2)
-            {
-                await RunKoGaMa(true);
-                Thread.Sleep(5000);
-
-            }
-
-
         }
-        async static Task RunKoGaMa(bool openKoGaMa)
+
+
+        static async Task HandleTwoArgs(string arg)
+        {
+            switch (arg)
+            {
+                case "uninstall":
+                    Uninstall();
+                    break;
+                case "install":
+                    await Install();
+                    break;
+            }
+        }
+
+        static async Task HandleThreeArgs(string arg, string dllplugin)
+        {
+            switch (arg)
+            {
+                case "run-plugin":
+                    await RunPlugin(dllplugin);
+                    break;
+                case "uninstall-plugin":
+                    await UninstallPlugin(dllplugin);
+                    break;
+            }
+        }
+
+        static void Uninstall()
+        {
+            PluginsHelper.UninstallExternalPlugins();
+        }
+
+        static async Task Install()
+        {
+            LogServiceStatus("Starting");
+            var services = new ServiceManager();
+            LogServiceStatus("Registering all services");
+
+            RegisterBasicServices(services);
+            RegisterAdvancedServices(services);
+
+            LogServiceStatus("Building all services");
+            await services.Build();
+        }
+
+        static async Task RunPlugin(string plugindll)
+        {
+            LogServiceStatus("Starting");
+            var services = new ServiceManager();
+            LogServiceStatus("Registering all services");
+
+            RegisterBasicServices(services);
+            services.InitExternalPlugin(Path.Combine(PathHelp.PluginsPath, plugindll));
+
+            LogServiceStatus("Building all services");
+            await services.Build();
+        }
+
+        static async Task UninstallPlugin(string plugindll)
+        {
+            LogServiceStatus("Starting");
+            var services = new ServiceManager();
+            LogServiceStatus("Registering all services");
+
+            RegisterBasicServices(services);
+
+            LogServiceStatus("Building all services");
+            await services.Build();
+        }
+
+        static async Task Normal()
         {
             if (ConfigService.SRead("PreLoaderKoGaMa", "Debug") == "false")
             {
                 var handle = GetConsoleWindow();
                 ShowWindow(handle, SW_HIDE);
             }
+
             LogServiceStatus("Starting");
             var services = new ServiceManager();
             LogServiceStatus("Registering all services");
 
-            RegisterServices(services, openKoGaMa);
-
+            RegisterBasicServices(services);
+            RegisterAdvancedServices(services);
+            RegisterKoGaMaRun(services);
             LogServiceStatus("Building all services");
-
             await services.Build();
         }
+
         private static void LogServiceStatus(string status)
         {
             ConsoleHelper.Log("ServiceManager", status);
         }
 
-        private static void RegisterServices(ServiceManager services, bool openKoGaMa)
+        private static void RegisterBasicServices(ServiceManager serviceManager)
         {
-            services.Register<ConsoleTools>();
-            services.Register<BepinexDownload>();
-            services.Register<KoGaMaToolsDownload>();
-            services.InitExternalPlugins();
-#if RELEASE
-            if (openKoGaMa)
-            {
-                services.Register<KoGaMaRun>();
-            }
-#endif
+            serviceManager.Register<ConfigService>();
+            serviceManager.Register<ConsoleTools>();
+
+        }
+        private static void RegisterKoGaMaRun(ServiceManager serviceManager)
+        {
+            serviceManager.Register<KoGaMaRun>();
+
+        }
+        private static void RegisterAdvancedServices(ServiceManager serviceManager)
+        {
+            serviceManager.InitExternalPlugins();
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>$(MSBuildProjectName).plugin</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PreLoaderKoGaMa.Plugins.BepInEx\PreLoaderKoGaMa.Plugins.BepInEx.csproj" />
+    <ProjectReference Include="..\PreLoaderKoGaMa\PreLoaderKoGaMa.csproj" />
+  </ItemGroup>
+
+</Project>

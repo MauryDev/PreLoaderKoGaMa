@@ -1,15 +1,11 @@
-﻿
+﻿using PreLoaderKoGaMa.Helpers;
 using System.Text.RegularExpressions;
 
-namespace PreLoaderKoGaMa.Helpers
+namespace PreLoaderKoGaMa.Plugins.KoGaMaTools
 {
     public static class HelperLatestVersion
     {
-        internal static GithubRepositoryInfo PreLoaderKoGaMa = new() {
-            Author = "MauryDev",
-            Repository = "PreLoaderKoGaMa",
-            Branch = "master"
-        };
+
         internal static GithubRepositoryInfo KoGaMaTools = new()
         {
             Author = "Beckowl",
@@ -72,23 +68,18 @@ namespace PreLoaderKoGaMa.Helpers
             using HttpClient client = new();
             return await client.GetStreamAsync(GetURLLastRelease(prefixfile, version));
         }
-        public static async Task<Stream> DownloadBepinexAsync()
-        {
-            
-            return await GithubRawHelper.GetStream(PreLoaderKoGaMa, "PreLoaderKoGaMa/src/be.692+851521c.zip");
-        }
+
         public static async Task<Stream> GetLastReleaseStream()
         {
-           
+
             var version = await GetVersionByAPI("src/ModInfo.cs");
             return await DownloadLastReleaseFile("KogamaTools.v", version);
         }
-        public static bool CanInstallBepinex => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx"));
-            
-        
+
+
         public static bool CanInstallKoGaMaTools => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx/Plugins/KoGaMaTools"));
-        
-   
-        
+
+
+
     }
 }

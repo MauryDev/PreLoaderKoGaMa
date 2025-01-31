@@ -2,7 +2,7 @@
 
 namespace PreLoaderKoGaMa.Helpers
 {
-    internal class GithubRepositoryInfo
+    public class GithubRepositoryInfo
     {
         public string Author { get; set; } = string.Empty;
         public string Repository { get; set; } = string.Empty;
