@@ -1,4 +1,4 @@
 {
-  "kogama-tools": "",
-  "bepinex":  ""
+  "kogama-tools": "https://github.com/MauryDev/PreLoaderKoGaMa/raw/refs/heads/master/PreLoaderKoGaMa.Plugins.KoGaMaTools/package/package.zip",
+  "bepinex": "https://github.com/MauryDev/PreLoaderKoGaMa/raw/refs/heads/master/PreLoaderKoGaMa.Plugins.BepInEx/package/package.zip"
 }

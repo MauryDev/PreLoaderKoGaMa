@@ -7,7 +7,7 @@ public static class PluginHelper
 {
     public static async Task OnInstallOficial(string[] launchpauth,string PluginName)
     {
-        using var stream = await GithubRawHelper.GetStreamCurrent("Packages/packages-info.json");
+        using var stream = await GithubRawHelper.GetStreamCurrent("packages-info.json");
         var packages = JsonSerializer.Deserialize<Dictionary<string, string>>(stream);
         foreach (var package in packages)
         {
