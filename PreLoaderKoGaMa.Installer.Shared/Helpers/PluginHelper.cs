@@ -16,7 +16,6 @@ public static class PluginHelper
                 using var client = new HttpClient();
                 using var pluginStream = await client.GetStreamAsync(package.Value);
                 using var zip = new ZipArchive(pluginStream);
-
                 await PluginInstall.Install(launchpauth, zip);
                 break;
             }

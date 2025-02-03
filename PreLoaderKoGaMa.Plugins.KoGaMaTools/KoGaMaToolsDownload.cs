@@ -54,14 +54,14 @@ namespace PreLoaderKoGaMa.Plugins.KoGaMaTools
                 var getversion = File.ReadAllText(pluginversionPath) == version;
                 if (getversion)
                 {
-                    return true;
+                    return false;
                 }
                 
             }
             using var stream = await HelperLatestVersion.DownloadLastReleaseFile("KogamaTools.v", version);
 
             await Install(stream, version);
-            return false;
+            return true;
         }
         public async Task RunAsync()
         {

@@ -22,6 +22,12 @@ namespace PreLoaderKoGaMa.Installer
             Invoke(SetStateInternal, title, Math.Clamp(perc,0,100));
 
         }
+        public void CloseWin()
+        {
+            
+            Invoke(this.Close);
+
+        }
         void SetStateInternal(string title, int progress)
         {
             label1.Text = title;

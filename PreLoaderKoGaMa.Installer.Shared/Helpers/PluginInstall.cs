@@ -1,6 +1,8 @@
 ﻿
+using System.Collections;
 using System.Diagnostics;
 using System.IO.Compression;
+using System.IO.Packaging;
 using System.Text.Json;
 
 namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
@@ -30,14 +32,15 @@ public static class PluginInstall
             return;
         var package = JsonSerializer.Deserialize<PackageInfo>(entrypackage.Open());
         var name = package.Name;
-
-       
-
-        foreach (var launchpath in launchpaths)
+        var bitArray = launchpaths
+            .Select((launchpath) => Path.Combine(launchpath, "Plugins", name))
+            .Select((path) => Directory.Exists(path)).ToArray();
+        
+        foreach (var launchpath in launchpaths.Zip(bitArray))
         {
 
-            var packagepath = Path.Combine(launchpath, "Plugins", name);
-            if (Directory.Exists(packagepath))
+            var packagepath = Path.Combine(launchpath.First, "Plugins", name);
+            if (launchpath.Second)
                 continue;
 
             await ExtractFiles(packagepath, zipArchive);
@@ -56,12 +59,11 @@ public static class PluginInstall
                 await PluginHelper.OnInstallOficial(launchpaths, dependencyInfo.Value);
             }
         }
-        foreach (var launchpath in launchpaths)
+        foreach (var launchpath in launchpaths.Zip(bitArray))
         {
-            var packagepath = Path.Combine(launchpath, "Plugins", name);
-            if (Directory.Exists(packagepath))
-                continue;
-            ProcessStartInfo processStartInfo = new(Path.Combine(launchpath, "PreLoaderKoGaMa.exe"))
+            var packagepath = Path.Combine(launchpath.First, "Plugins", name);
+            if (launchpath.Second) continue;
+            ProcessStartInfo processStartInfo = new(Path.Combine(launchpath.First, "PreLoaderKoGaMa.exe"))
             {
                 UseShellExecute = false,
                 CreateNoWindow = true

@@ -29,7 +29,17 @@ namespace PreLoaderKoGaMa.Installer
                     {
                         loading = new()
                         {
-                            RunCallback = () => Task.Run(() => PluginHelper.OnInstallOficial(PathsInstall, PluginName))
+
+                            RunCallback = () => Task.Run(async() => {
+                                loading.SetState("Loading...", 0);
+                                try
+                                {
+                                    await PluginHelper.OnInstallOficial(PathsInstall, PluginName);
+
+                                }
+                                catch (Exception) { }
+                                loading.CloseWin();
+                                })
                         };
                         loading.ShowDialog(this);
                         break;
@@ -39,7 +49,17 @@ namespace PreLoaderKoGaMa.Installer
 
                         loading = new()
                         {
-                            RunCallback = () => Task.Run(() => PluginHelper.OnInstallurl(PathsInstall, PluginName))
+                            RunCallback = () => Task.Run(async() => {
+                                loading.SetState("Loading...", 0);
+
+                                try
+                                {
+                                    await PluginHelper.OnInstallurl(PathsInstall, PluginName);
+
+                                }
+                                catch (Exception){}
+                                loading.CloseWin();
+                            })
                         };
                         loading.ShowDialog(this);
                         break;
@@ -49,7 +69,17 @@ namespace PreLoaderKoGaMa.Installer
 
                         loading = new()
                         {
-                            RunCallback = () => Task.Run(() => PluginHelper.OnInstallFile(PathsInstall, PluginName))
+                            RunCallback = () => Task.Run(async() => {
+                                loading.SetState("Loading...", 0);
+
+                                try
+                                {
+                                    await PluginHelper.OnInstallFile(PathsInstall, PluginName);
+
+                                }
+                                catch (Exception) { }
+                                loading.CloseWin();
+                            })
                         };
                         loading.ShowDialog(this);
                         break;
