@@ -16,7 +16,7 @@ public class MainPlugin : IPlugin
 
     void IPlugin.Uninstall()
     {
-        var path = Path.Combine(PathHelp.PluginsPath, "BepInEx");
+        var path = Path.Combine(PathHelp.KoGaMaStandalonePath, "BepInEx");
         if (Directory.Exists(path))
         {
             Directory.Delete(path, true);

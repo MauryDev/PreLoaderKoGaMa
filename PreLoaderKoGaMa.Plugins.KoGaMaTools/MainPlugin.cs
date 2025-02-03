@@ -19,7 +19,7 @@ public class MainPlugin : IPlugin
 
     void IPlugin.Uninstall()
     {
-        var path = Path.Combine(PathHelp.PluginsPath, "BepInEx", "Plugins", "KoGaMaTools");
+        var path = Path.Combine(PathHelp.KoGaMaStandalonePath, "BepInEx", "Plugins", "KoGaMaTools");
         if (Directory.Exists(path))
         {
             Directory.Delete(path, true);
