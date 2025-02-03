@@ -9,9 +9,15 @@ namespace PreLoaderKoGaMa.Installer
         [STAThread]
         static void Main()
         {
-            
-            GithubRawHelper.Current = JsonSerializer.Deserialize<GithubRepositoryInfo>(Resources.githubconfig);
-            
+            var githubConfig = JsonSerializer.Deserialize<GithubRepositoryInfo>(Resources.githubconfig);
+            if (githubConfig != null)
+            {
+                GithubRawHelper.Current = githubConfig;
+            }
+            else
+            {
+                throw new InvalidOperationException("Failed to deserialize GithubRepositoryInfo from resources.");
+            }
 
             ApplicationConfiguration.Initialize();
             Application.Run(new FormMain());

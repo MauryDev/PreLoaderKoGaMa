@@ -16,38 +16,74 @@ namespace PreLoaderKoGaMa.Plugins.KoGaMaTools
             classLogger = consoleTools;
             KoGaMaToolsInstallPath = Path.Combine(bepinexDownload.BepinexPath, "Plugins");
         }
+        async Task Install(Stream streamzip, string version)
+        {
+            var pluginPath = KoGaMaToolsInstallPath;
+            var pluginversionPath = Path.Combine(pluginPath, "KogamaTools", "VERSION.txt");
+
+
+            classLogger.Log("Loading KoGaMa Tools zip");
+
+            using ZipArchive koGaMaToolsArchive = new(streamzip);
+           
+            classLogger.Log("Extracting KoGaMa Tools");
+
+            foreach (ZipArchiveEntry zipArchiveEntry in koGaMaToolsArchive.Entries)
+            {
+                string destinationPath = Path.Combine(pluginPath, zipArchiveEntry.FullName);
+                Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
+                if (string.IsNullOrEmpty(zipArchiveEntry.Name))
+                {
+                    continue;
+                }
+                using Stream stream = zipArchiveEntry.Open();
+                using FileStream fileStream = new(destinationPath, FileMode.Create);
+                await stream.CopyToAsync(fileStream);
+            }
+            File.WriteAllText(pluginversionPath, version);
+
+            classLogger.Log("Installed");
+
+        }
+        async Task<bool> TryUpdate(string version)
+        {
+            var pluginPath = KoGaMaToolsInstallPath;
+            var pluginversionPath = Path.Combine(pluginPath, "KogamaTools", "VERSION.txt");
+            if (File.Exists(pluginversionPath))
+            {
+                var getversion = File.ReadAllText(pluginversionPath) == version;
+                if (getversion)
+                {
+                    return true;
+                }
+                
+            }
+            using var stream = await HelperLatestVersion.DownloadLastReleaseFile("KogamaTools.v", version);
+
+            await Install(stream, version);
+            return false;
+        }
         public async Task RunAsync()
         {
             try
             {
+                var version = await HelperLatestVersion.GetVersionByAPI("src/ModInfo.cs");
                 classLogger.Log("Checking if it is installed");
                 if (!HelperLatestVersion.CanInstallKoGaMaTools)
                 {
-                    classLogger.Log("All dependencies are installed");
-                    return;
+                    if (!(await TryUpdate(version)))
+                    {
+                        classLogger.Log("All dependencies are installed");
+                        return;
+                    }
+                    classLogger.Log("All dependencies are updated");
+
                 }
-                var pluginPath = KoGaMaToolsInstallPath;
 
                 classLogger.Log("Downloading the latest release of KoGaMa Tools");
-                Stream releaseStream = await HelperLatestVersion.GetLastReleaseStream();
+                using Stream releaseStream = await HelperLatestVersion.DownloadLastReleaseFile("KogamaTools.v", version);
 
-                classLogger.Log("Loading KoGaMa Tools zip");
-
-                using ZipArchive koGaMaToolsArchive = new(releaseStream);
-
-                classLogger.Log("Extracting KoGaMa Tools");
-
-                foreach (ZipArchiveEntry zipArchiveEntry in koGaMaToolsArchive.Entries)
-                {
-                    string destinationPath = Path.Combine(pluginPath, zipArchiveEntry.FullName);
-                    Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
-
-                    if (!string.IsNullOrEmpty(zipArchiveEntry.Name))
-                    {
-                        zipArchiveEntry.ExtractToFile(destinationPath, overwrite: true);
-                    }
-                }
-                classLogger.Log("Installed");
+                await Install(releaseStream,version);
             }
             catch (Exception err)
             {

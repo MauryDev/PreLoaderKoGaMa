@@ -40,6 +40,7 @@
             label2 = new Label();
             folderBrowserDialog1 = new FolderBrowserDialog();
             backgroundWorker_install = new System.ComponentModel.BackgroundWorker();
+            button2 = new Button();
             SuspendLayout();
             // 
             // checkBox_br
@@ -103,7 +104,7 @@
             button_install.ForeColor = SystemColors.ButtonHighlight;
             button_install.Image = Properties.Resources.download;
             button_install.ImageAlign = ContentAlignment.MiddleRight;
-            button_install.Location = new Point(9, 229);
+            button_install.Location = new Point(10, 229);
             button_install.Name = "button_install";
             button_install.Size = new Size(337, 44);
             button_install.TabIndex = 4;
@@ -159,7 +160,7 @@
             button_uninstall.ForeColor = SystemColors.ButtonHighlight;
             button_uninstall.Image = Properties.Resources.download;
             button_uninstall.ImageAlign = ContentAlignment.MiddleRight;
-            button_uninstall.Location = new Point(9, 279);
+            button_uninstall.Location = new Point(10, 279);
             button_uninstall.Name = "button_uninstall";
             button_uninstall.Size = new Size(337, 44);
             button_uninstall.TabIndex = 8;
@@ -188,12 +189,31 @@
             // 
             backgroundWorker_install.DoWork += backgroundWorker_install_DoWork;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(64, 64, 64);
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Font = new Font("Consolas", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button2.ForeColor = SystemColors.ButtonHighlight;
+            button2.Image = Properties.Resources.package;
+            button2.ImageAlign = ContentAlignment.MiddleRight;
+            button2.Location = new Point(10, 329);
+            button2.Name = "button2";
+            button2.Size = new Size(337, 44);
+            button2.TabIndex = 11;
+            button2.Text = "Packages";
+            button2.TextAlign = ContentAlignment.MiddleLeft;
+            button2.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click_1;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
-            ClientSize = new Size(361, 329);
+            ClientSize = new Size(361, 376);
+            Controls.Add(button2);
             Controls.Add(label2);
             Controls.Add(button_uninstall);
             Controls.Add(button_selectcustomfolder);
@@ -227,5 +247,6 @@
         private Label label2;
         private FolderBrowserDialog folderBrowserDialog1;
         private System.ComponentModel.BackgroundWorker backgroundWorker_install;
+        private Button button2;
     }
 }

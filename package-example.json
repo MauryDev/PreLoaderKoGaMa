@@ -1,0 +1,6 @@
+{
+  "name": "yourPlugin",
+  "dependencies": [
+    {"type":  "file", "value":  "test"}
+  ]
+}

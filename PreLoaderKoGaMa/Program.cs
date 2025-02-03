@@ -66,11 +66,11 @@ namespace PreLoaderKoGaMa
         {
             switch (arg)
             {
-                case "run-plugin":
-                    await RunPlugin(dllplugin);
+                case "install-plugin":
+                    InstallPlugin(dllplugin);
                     break;
                 case "uninstall-plugin":
-                    await UninstallPlugin(dllplugin);
+                    UninstallPlugin(dllplugin);
                     break;
             }
         }
@@ -93,29 +93,27 @@ namespace PreLoaderKoGaMa
             await services.Build();
         }
 
-        static async Task RunPlugin(string plugindll)
+        static void InstallPlugin(string plugins_args)
         {
-            LogServiceStatus("Starting");
-            var services = new ServiceManager();
-            LogServiceStatus("Registering all services");
+            var plugins = plugins_args.Split(";");
+            
+            foreach (var plugin in plugins)
+            {
+                PluginsHelper.Install(plugin);
 
-            RegisterBasicServices(services);
-            services.InitExternalPlugin(Path.Combine(PathHelp.PluginsPath, plugindll));
+            }
 
-            LogServiceStatus("Building all services");
-            await services.Build();
+
         }
 
-        static async Task UninstallPlugin(string plugindll)
+        static void UninstallPlugin(string plugins_args)
         {
-            LogServiceStatus("Starting");
-            var services = new ServiceManager();
-            LogServiceStatus("Registering all services");
+            var plugins = plugins_args.Split(";");
 
-            RegisterBasicServices(services);
-
-            LogServiceStatus("Building all services");
-            await services.Build();
+            foreach (var plugin in plugins)
+            {
+                PluginsHelper.Uninstall(plugin);
+            }
         }
 
         static async Task Normal()

@@ -17,7 +17,11 @@ namespace PreLoaderKoGaMa.Installer
             Invoke(SetStateInternal, title, 100 / TotalStep * Step);
 
         }
+        public void SetState(string title, int perc)
+        {
+            Invoke(SetStateInternal, title, Math.Clamp(perc,0,100));
 
+        }
         void SetStateInternal(string title, int progress)
         {
             label1.Text = title;

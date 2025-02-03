@@ -5,7 +5,7 @@ namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
 
 internal class UninstallHelper
 {
-    public static void Uninstall(string LaunchPath, ZipArchive zipArchive)
+    public static async Task Uninstall(string LaunchPath, ZipArchive zipArchive)
     {
        
         var path = Path.Combine(LaunchPath, "PreLoaderKoGaMa.exe");
@@ -21,7 +21,7 @@ internal class UninstallHelper
                 }
             };
             process.Start();
-            process.WaitForExit();
+            await process.WaitForExitAsync();
         }
        
 
@@ -47,7 +47,7 @@ internal class UninstallHelper
 
 
     }
-    public static void Uninstall(KoGaMaServer kogamaServer, ZipArchive zipArchive)
+    public static async Task Uninstall(KoGaMaServer kogamaServer, ZipArchive zipArchive)
     {
         string path = string.Empty;
         switch (kogamaServer)
@@ -63,6 +63,6 @@ internal class UninstallHelper
                 break;
         }
         if (Directory.Exists(path))
-            Uninstall(PathHelper.GetLauncher(path), zipArchive);
+            await Uninstall(PathHelper.GetLauncher(path), zipArchive);
     }
 }

@@ -18,6 +18,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreLoaderKoGaMa.Plugins.KoG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreLoaderKoGaMa.Plugins.BepInEx", "PreLoaderKoGaMa.Plugins.BepInEx\PreLoaderKoGaMa.Plugins.BepInEx.csproj", "{A7A37488-4C37-4EAD-80FF-6B06013F4C55}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{043F3299-530C-49A7-AC7D-DFA88D714FF5}"
+	ProjectSection(SolutionItems) = preProject
+		package-example.json = package-example.json
+		packages-info.json = packages-info.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +49,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{043F3299-530C-49A7-AC7D-DFA88D714FF5} = {30B850C1-211C-4F8A-BBFB-A57400FA508F}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PreLoaderKoGaMa.Installer.Shared\PreLoaderKoGaMa.Installer.Shared.projitems*{44c89863-e8a1-4dc6-bc42-8b4029671f05}*SharedItemsImports = 13

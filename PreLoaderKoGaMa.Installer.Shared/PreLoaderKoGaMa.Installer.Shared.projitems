@@ -9,12 +9,18 @@
     <Import_RootNamespace>PreLoaderKoGaMa.Installer.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CollectionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DependencyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\GithubRawHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\GithubRepositoryInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\InstallHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\KoGaMaServer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)helpers\PatchDll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PackageInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PatchDll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PathHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PluginHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PluginInstall.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\UninstallPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\UninstallHelper.cs" />
   </ItemGroup>
 </Project>

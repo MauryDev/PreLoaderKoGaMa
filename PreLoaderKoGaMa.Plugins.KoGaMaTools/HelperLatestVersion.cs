@@ -77,7 +77,7 @@ namespace PreLoaderKoGaMa.Plugins.KoGaMaTools
         }
 
 
-        public static bool CanInstallKoGaMaTools => !Directory.Exists(Path.Combine(PathHelp.LocalPath, "Standalone/BepInEx/Plugins/KoGaMaTools"));
+        public static bool CanInstallKoGaMaTools => !Directory.Exists(Path.Combine(PathHelp.KoGaMaStandalonePath, "BepInEx/Plugins/KoGaMaTools"));
 
 
 

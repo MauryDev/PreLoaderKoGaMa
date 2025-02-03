@@ -1,6 +1,7 @@
 using PreLoaderKoGaMa.Installer.Shared.Helpers;
 using System.Collections;
 using System.IO.Compression;
+using System.Runtime.Loader;
 
 namespace PreLoaderKoGaMa.Installer
 {
@@ -59,18 +60,18 @@ namespace PreLoaderKoGaMa.Installer
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa BR");
 
-                InstallHelper.Install(KoGaMaServer.BR, zip);
+                await InstallHelper.Install(KoGaMaServer.BR, zip);
             }
             if (WwwEnable)
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa WWW");
-                InstallHelper.Install(KoGaMaServer.WWW, zip);
+                await InstallHelper.Install(KoGaMaServer.WWW, zip);
             }
             if (FriendsEnable)
             {
                 loading.NextState("Extracting PreLoaderKoGaMa to KoGaMa Friends");
 
-                InstallHelper.Install(KoGaMaServer.Friends, zip);
+                await InstallHelper.Install(KoGaMaServer.Friends, zip);
             }
             if (CustomEnable)
             {
@@ -78,10 +79,10 @@ namespace PreLoaderKoGaMa.Installer
 
 
                 var pathlauncher = PathHelper.GetLauncher(customPath);
-                InstallHelper.Install(pathlauncher, zip);
+                await InstallHelper.Install(pathlauncher, zip);
             }
             loading.NextState("PreLoaderKoGaMa installation successful");
-            Thread.Sleep(5000);
+            await Task.Delay(5000);
             loading.Invoke(() => loading.Close());
             loading = null;
         }
@@ -112,19 +113,19 @@ namespace PreLoaderKoGaMa.Installer
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa BR");
 
-                UninstallHelper.Uninstall(KoGaMaServer.BR, zip);
+                await UninstallHelper.Uninstall(KoGaMaServer.BR, zip);
             }
             if (WwwEnable)
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa WWW");
 
-                UninstallHelper.Uninstall(KoGaMaServer.WWW, zip);
+                await UninstallHelper.Uninstall(KoGaMaServer.WWW, zip);
             }
             if (FriendsEnable)
             {
                 loading.NextState("Uninstalling PreLoaderKoGaMa from KoGaMa Friends");
 
-                UninstallHelper.Uninstall(KoGaMaServer.Friends, zip);
+                await UninstallHelper.Uninstall(KoGaMaServer.Friends, zip);
             }
             if (CustomEnable)
             {
@@ -132,12 +133,12 @@ namespace PreLoaderKoGaMa.Installer
                 if (Directory.Exists(customPath))
                 {
                     var pathlauncher = PathHelper.GetLauncher(customPath);
-                    UninstallHelper.Uninstall(pathlauncher, zip);
+                    await UninstallHelper.Uninstall(pathlauncher, zip);
                 }
-                
+
             }
             loading.NextState("PreLoaderKoGaMa uninstallation successful");
-            Thread.Sleep(5000);
+            await Task.Delay(5000);
             loading.Invoke(() => loading.Close());
             loading = null;
         }
@@ -166,6 +167,27 @@ namespace PreLoaderKoGaMa.Installer
             };
 
             loading.ShowDialog(this);
+        }
+        public IEnumerable<string> GetAllKoGaMaPath()
+        {
+            if (checkBox_br.Checked)
+                yield return PathHelper.BRPath;
+            if (checkBox_www.Checked)
+                yield return PathHelper.WWWPath;
+            if (checkBox_friends.Checked)
+                yield return PathHelper.FriendsPath;
+            if (checkBox4_custom.Checked)
+                yield return textBox_custom.Text;
+
+        }
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            var paths = (from item in GetAllKoGaMaPath()
+                        select  PathHelper.GetLauncher(item))
+                        .ToArray();
+            var plugininstaller = new PluginInstaller(paths);
+            
+            plugininstaller.ShowDialog(this);
         }
     }
 }

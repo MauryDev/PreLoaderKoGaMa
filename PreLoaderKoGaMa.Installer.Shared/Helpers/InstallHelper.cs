@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using System.IO.Compression;
 
 namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
@@ -6,7 +7,7 @@ namespace PreLoaderKoGaMa.Installer.Shared.Helpers;
 
 internal class InstallHelper
 {
-    public static void Install(string launchPath, ZipArchive zipArchive)
+    public static async Task Install(string launchPath, ZipArchive zipArchive)
     {
         foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Entries)
         {
@@ -14,7 +15,9 @@ internal class InstallHelper
             Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
             if (string.IsNullOrEmpty(zipArchiveEntry.Name))
                 continue;
-            zipArchiveEntry.ExtractToFile(destinationPath, overwrite: true);
+            using var entrystream = zipArchiveEntry.Open();
+            using FileStream fileStream = new(destinationPath, FileMode.Create);
+            await entrystream.CopyToAsync(fileStream);
         }
         PatchDll.Patch(Path.Combine(launchPath, "LauncherCore.dll"));
 
@@ -34,11 +37,27 @@ internal class InstallHelper
                 }
             };
             process.Start();
-            process.WaitForExit();
+            await process.WaitForExitAsync();
         }
     }
+    public static async Task InstallPlugin(string launchPath, ZipArchive zipArchive)
+    {
+        var pluginspath = Path.Combine(launchPath, "Plugins");
+        if (!Directory.Exists(Path.Combine(launchPath, "Plugins")))
+            return;
 
-    public static void Install(KoGaMaServer kogamaServer, ZipArchive zipArchive)
+        foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Entries)
+        {
+            string destinationPath = Path.Combine(pluginspath, zipArchiveEntry.FullName);
+            Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
+            if (string.IsNullOrEmpty(zipArchiveEntry.Name))
+                continue;
+            using var entrystream = zipArchiveEntry.Open();
+            using FileStream fileStream = new(destinationPath, FileMode.Create);
+            await entrystream.CopyToAsync(fileStream);
+        }
+    }
+    public static async Task Install(KoGaMaServer kogamaServer, ZipArchive zipArchive)
     {
         string path = string.Empty;
         switch (kogamaServer)
@@ -54,7 +73,7 @@ internal class InstallHelper
                 break;
         }
         if (Directory.Exists(path))
-            Install(PathHelper.GetLauncher(path), zipArchive);
+            await Install(PathHelper.GetLauncher(path), zipArchive);
     }
 }
 
