@@ -15,7 +15,6 @@ namespace PreLoaderKoGaMa.Installer.Shared.Helpers
                     ProcessStartInfo processStartInfo = new(Path.Combine(launchpath, "PreLoaderKoGaMa.exe"))
                     {
                         UseShellExecute = false,
-                        CreateNoWindow = true
                     };
                     processStartInfo.ArgumentList.AddRange(new string[] { "uninstall-plugin", name });
 

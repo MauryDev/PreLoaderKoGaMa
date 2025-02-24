@@ -96,12 +96,10 @@ namespace PreLoaderKoGaMa.Helpers
                 return null;
             }
             var pluginDirectory = Path.Combine(pathPlugins, plugin_name);
-            Console.WriteLine("GetPlugin: " + pluginDirectory);
             if (!Directory.Exists(pluginDirectory))
             {
                 return null;
             }
-            Console.WriteLine("GetPlugin: " + pluginDirectory);
             var pluginFiles = Directory.EnumerateFiles(pluginDirectory, "*.plugin.dll", SearchOption.TopDirectoryOnly).Take(1);
             return pluginFiles.Select(GetPluginType).FirstOrDefault();
         }

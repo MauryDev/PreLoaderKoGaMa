@@ -36,11 +36,11 @@ public static class PluginInstall
             .Select((launchpath) => Path.Combine(launchpath, "Plugins", name))
             .Select((path) => Directory.Exists(path)).ToArray();
         
-        foreach (var launchpath in launchpaths.Zip(bitArray))
+        foreach (var (First, Second) in launchpaths.Zip(bitArray))
         {
 
-            var packagepath = Path.Combine(launchpath.First, "Plugins", name);
-            if (launchpath.Second)
+            var packagepath = Path.Combine(First, "Plugins", name);
+            if (Second)
                 continue;
 
             await ExtractFiles(packagepath, zipArchive);

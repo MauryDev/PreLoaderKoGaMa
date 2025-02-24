@@ -96,7 +96,11 @@ namespace PreLoaderKoGaMa.Installer
             PluginName = textBox1.Text;
             loading = new()
             {
-                RunCallback = () => Task.Run(() => UninstallPlugin.Uninstall(PathsInstall, PluginName))
+                RunCallback = () => Task.Run(async() =>
+                {
+                    await UninstallPlugin.Uninstall(PathsInstall, PluginName);
+                    loading.CloseWin();
+                })
             };
             loading.ShowDialog(this);
         }

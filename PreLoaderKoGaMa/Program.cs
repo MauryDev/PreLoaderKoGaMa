@@ -39,6 +39,7 @@ namespace PreLoaderKoGaMa
                 case 3:
                     await HandleThreeArgs(args[1], args[2]);
                     break;
+               
                 default:
                     if (argc > 3)
                     {
